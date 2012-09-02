@@ -138,6 +138,7 @@ def parse_wp_xml(file):
 
             export_item = {
                 'title': gi('title'),
+                'excerpt': gi('excerpt:encoded'),
                 'date': gi('wp:post_date'),
                 'slug': gi('wp:post_name'),
                 'status': gi('wp:status'),
@@ -277,6 +278,7 @@ def write_jekyll(data, target_format):
             'slug': i['slug'],
             'wordpress_id': int(i['wp_id']),
             'comments': i['comments'],
+            'excerpt': i['excerpt'],
             'image': i['image'],
         }
         if i['status'] != u'publish':
