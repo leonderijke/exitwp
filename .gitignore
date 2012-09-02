@@ -1,3 +1,5 @@
 build/
 *.pyc
 .ropeproject/
+*.sublime-project
+*.sublime-workspace
