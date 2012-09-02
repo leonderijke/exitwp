@@ -105,6 +105,22 @@ def parse_wp_xml(file):
                     result = unicode(result)
                 return result
 
+            def pm(q, unicode_wrap=True):
+                '''
+                Find postmeta tags and values
+                '''
+                result = ''
+                post_meta = i.findall(ns['wp'] + 'postmeta')
+                for tag in post_meta:
+                    if tag.find(ns['wp'] + 'meta_key').text == q:
+                        try:
+                            result = tag.find(ns['wp'] + 'meta_value').text
+                        except AttributeError:
+                            result = "No Content Found"
+                if unicode_wrap:
+                    result = unicode(result)
+                return result
+
             body = gi('content:encoded')
             for key in body_replace:
                 body = body.replace(key, body_replace[key])
@@ -131,6 +147,7 @@ def parse_wp_xml(file):
                 'comments': gi('wp:comment_status') == u'open',
                 'taxanomies': export_taxanomies,
                 'body': body,
+                'image': pm('thesis_post_image').replace("wp-content/uploads", "images"),
                 'img_srcs': img_srcs
             }
 
@@ -260,6 +277,7 @@ def write_jekyll(data, target_format):
             'slug': i['slug'],
             'wordpress_id': int(i['wp_id']),
             'comments': i['comments'],
+            'image': i['image'],
         }
         if i['status'] != u'publish':
             yaml_header['published'] = False
